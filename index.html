@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cagliostro&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: hsl(0, 51%, 84%);
+        }
+
+        canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: 2s;
+            z-index: -1;
+        }
+
+        body {
+            font-size: 17px;
+            color: red;
+            font-family: 'Cagliostro';
+            background: black;
+            overflow: hidden;
+        }
+
+        p {
+            position: absolute;
+            width: 80vw;
+            left: 50%;
+            top: 50%;
+            translate: -50% -50%;
+            transition: all 0.3s ease, top 10s ease-in-out;
+            text-align: right;
+            direction: rtl;
+        }
+
+        img, video { 
+            width: 200px;
+            object-fit: cover;
+            object-position: center;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            transition: all 0.3s ease, top 10s ease-in-out;
+            animation: floatInPlace 5s ease infinite;
+            border-radius: 5px;
+        }
+
+        .gallary { 
+            position: absolute;
+            top: 110vh;
+        }
+
+        @keyframes floatInPlace {
+            0%   { transform: translateY(0px) rotate(0deg); }
+            25%  { transform: translateY(-5px) rotate(2deg); }
+            50%  { transform: translateY(0px) rotate(0deg); }
+            75%  { transform: translateY(2px) rotate(-2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+    </style>
+
+    <div class="gallary"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bezier-easing@2.1.0/dist/bezier-easing.min.js"></script>
+    <script>let canvas1 = document.createElement('canvas');
+        let ctx1 = canvas1.getContext('2d');  
+        document.body.appendChild(canvas1);
+        canvas1.classList.add('background')
+        let letters1 = []
+        let fontSize1 = 35
+        let verticalWORD1 = "HAPPYBIRTHDAYJIHAD";
+        let barsWidth1 = 30
+        let metrics1  = ctx1.measureText('x'); // approximate width of one character
+        metrics1.height = 30;
+        
+        let verticalBars1 = shuffleArray1(Array.from({length: Math.ceil(window.innerWidth / barsWidth1)}).map((_,i) => i))
+        function draw1() {
+        
+            drawTextVerticalWords1(verticalBars1)
+            setInterval(_ => {
+                drawTextVerticalWords1(verticalBars1)
+            },2500)
+        
+            addEventListener("script2:ready", _ => {
+                canvas1.style.opacity = .5;
+              });
+            addEventListener("script2:ended", _ => {
+                canvas1.style.opacity = 0;
+              });
+            begin1()
+        }
+        
+        function drawTextVerticalWords1(verticalBars1, secBetweenBar = 0.1) {
+            rest1()
+        
+            verticalBars1.forEach((n,i) => {
+                setTimeout(_ => {
+                    drawTextVertical1(verticalWORD1.repeat(3), n * barsWidth1, - randomInt1(0,10) * 30 , 30, 1.5, .1);
+                }, 1000 * i * secBetweenBar)
+            })
+        }
+        
+        let lastTime1 = null
+        
+        
+        window.addEventListener("resize", () => {
+            verticalBars1 = shuffleArray1(Array.from({length: Math.ceil(window.innerWidth / barsWidth1)}).map((_,i) => i))
+        });
+        
+        
+        function begin1(currentTime) {
+            if (lastTime1 === null) lastTime1 = currentTime;
+        
+            let delta = (currentTime - lastTime1) / 1000; // convert ms to seconds
+            lastTime1 = currentTime;
+        
+            rest1()
+            drawGlowingLetters1(delta)
+            requestAnimationFrame(begin1);
+        }
+        
+        function rest1() {
+            canvas1.width = window.innerWidth;
+            canvas1.height = window.innerHeight;
+            ctx1.font = `${fontSize1}px monospace`;
+        
+            ctx1.beginPath();
+            ctx1.fillStyle = "black";
+            ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+            ctx1.fill()
+        }
+        
+        function drawCircle1(x, y, radius) {
+            ctx1.beginPath();
+            ctx1.arc(x, y, radius, 0, Math.PI * 2);
+            ctx1.fill();
+        }
+        
+        function drawText1 (text, x, y) {
+            ctx1.fillText(text, x, y);
+        }
+        
+        function drawTextVertical1(text, x, y, lineHeight = 25, letterLiveFor = 1, secBetweenLetters = 1) {
+            ctx1.beginPath();
+            text.split('').forEach((letter,i) => { 
+                setTimeout(_ => {
+                    ctx1.beginPath();
+                    y += lineHeight;
+                    addGlowingLetter1(letter, (x - metrics1 .width / 2) + metrics1 .width / 2, y, letterLiveFor);
+                },1000 * i * secBetweenLetters)
+            })
+        }
+        
+        function addGlowingLetter1(letter, x, y, liveFor = 2) {
+            letters1.push({letter, x, y, s: 82, l: 83, a: 100, liveThen: Date.now(), liveFor});
+        }
+        
+        function drawGlowingLetters1(delta) {
+            letters1.forEach(({letter,x,y,s,l,a,liveThen,liveFor},i) => {
+                ctx1.fillStyle = `hsl(0, ${s}%, ${l}%, ${a}%)`; // Glow color
+                ctx1.shadowColor = `hsl(0, ${s}%, ${l}%, ${a}%)`; // Glow color`; // Glow color
+                ctx1.shadowBlur = 10; // Amount of blur
+                ctx1.shadowOffsetX = 0; // No offset (centered)
+                ctx1.shadowOffsetY = 0;
+                ctx1.fillText(letter, x, y);
+        
+                let aliveSec = (Date.now() - liveThen) / 1000; // How long the letter has been alive in seconds
+        
+                letters1[i].a = 100 - (aliveSec / liveFor * 100); // Decrease opacity over time
+                if(a < 0) {
+                    letters1.splice(i, 1); // Remove letter if opacity is less than 0
+                }
+            })
+        }
+        
+        
+        function randomInt1(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        function shuffleArray1(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+              let j = randomInt1(0, i); // use your randomInt1 function
+              [arr[i], arr[j]] = [arr[j], arr[i]]; // swap elements
+            }
+            return arr;
+        }
+        
+        
+        draw1();</script>
+    <script>let canvas2 = document.createElement('canvas');
+        let ctx2 = canvas2.getContext('2d');  
+        document.body.appendChild(canvas2);
+        
+        let fontSize2 = 35
+        let bigFontSize2 = 130
+        let fontFamily2 = "Cagliostro"
+        
+        let points2 = Array.from({length: 2000}, _ => [
+            {x: randomInt2(0, window.innerWidth), y: randomInt2(0, window.innerHeight), begin: Date.now(), idleAnimation: 0, transition: 2, size: 1}
+        ]);
+        
+        let pixelsUsed = 0
+        
+        function draw() {
+            rest2()
+        
+            DotedText(0, -bigFontSize2 * 1.5, "happy", bigFontSize2, true, .2)
+            DotedText(0, 0, "birth", bigFontSize2, true, .2)
+            DotedText(0, +bigFontSize2 * 1.5, "day", bigFontSize2, true, .2)
+            DotedText(0, 0, "jihad")
+            DotedText(0, 0, "❤️❤️❤️",80)
+        
+        
+            setTimeout(_ => {
+                let event = new Event("script2:ready")
+                dispatchEvent(event);
+            }, 1000 * (points2[0][0].transition + points2[0][0].idleAnimation))
+        
+            begin2()
+        }
+        
+        let lastTime2 = null
+        let density = 4; // space between sampled pixels (lower = more dots)
+        
+        
+        
+        function DotedText(translateX = 0, translateY = 0, word = "hello", fontSizeX = bigFontSize2, continueDraw = false, idleAnimation = 1, transition = 2) { 
+            let {targets,width:w,height:h,startY,startX} = createTextTargets2(word, fontSizeX)
+            ctx2.fillStyle = "#222";
+        
+            let centerX = canvas2.width / 2 - w/2 - startX
+            let centerY = canvas2.height / 2 - h/2 - startY
+        
+            if(continueDraw) {
+                let indexArray = (Array.from({length: points2.length - pixelsUsed}, (_, i) => i));
+        
+        
+                for(let i = 0; i < pixelsUsed; i++) {
+                    points2[i]?.push(points2[i][points2[i].length - 1]);
+                }
+        
+                indexArray.forEach((n ,i) => {
+                    n += pixelsUsed; // Offset the index by the number of pixels already used
+                        
+                    if(targets.length > i) {
+                        let {x,y} = targets[i];
+                        points2[n]?.push({x: centerX + x + translateX, y: centerY + y + translateY, transition, idleAnimation, size: 2})
+                    } else { 
+                        points2[n]?.push({x: points2[n][0].x + randomInt2(-50, 50), y: points2[n][0].y + randomInt2(-50, 50), begin: Date.now(), idleAnimation, transition, size: 1})
+                    }
+                })
+        
+                pixelsUsed += targets.length
+                return
+            }
+        
+            let indexArray = shuffleArray2(Array.from({length: points2.length}, (_, i) => i));
+        
+            indexArray.forEach((n ,i) => {
+                if(targets.length > i) {
+                    let {x,y} = targets[i];
+                    points2[n]?.push({x: centerX + x, y: centerY + y, transition: 2, idleAnimation: 2, size: 2})
+                } else { 
+                    points2[n]?.push({x: points2[n][0].x + randomInt2(-50, 50), y: points2[n][0].y + randomInt2(-50, 50), begin: Date.now(), idleAnimation: 2, transition: 2, size: 1})
+                }
+            })
+        
+        }
+        
+        
+        let stop = false
+        function begin2() {
+            rest2()
+            drawPoints2();
+            if(!stop) requestAnimationFrame(begin2);
+        }
+        
+        function drawPoints2() {
+            for(let point of points2) {
+                let timePassed = (Date.now() - point[0].begin) / 1000
+                let timeStamp = []
+                let ActiveState = null;
+                let NextState = null;
+                let NextStamp = null;
+                let ended = false
+        
+                point.forEach(({idleAnimation,transition}, index) => {
+                    transition = transition || 0;
+                    idleAnimation = idleAnimation || 0;
+                    timeStamp.push((index == 0 ? 0 : timeStamp[index - 1]) + idleAnimation + transition)
+                })
+        
+        
+                for(let [index, time] of timeStamp.entries()) {
+                    if(timePassed < time) {
+                        ActiveState = point?.[index - 1] || point[0]; // Get the active state
+                        NextState = point?.[index] || point[0]; // Get the active state
+                        NextStamp = time;
+                        break
+                    } else if(index == timeStamp.length - 1) {
+                        ActiveState = point?.[index];
+                        NextState = point?.[0];
+                        NextStamp = time + point?.[0].transition;
+                        ended = true; // If we reached the end, loop back to the start
+                    }
+                }
+        
+                
+                let deltaX = NextState.x - ActiveState.x;
+                let deltaY = NextState.y - ActiveState.y;
+                
+                let progress = 1 - (NextStamp - (timePassed + (NextState?.idleAnimation || 0))) / ((NextState?.transition || 0) );
+                
+                progress = Math.min(progress,1)
+        
+                if(ended && progress == 1 && !stop) {
+                    stop = true;
+                    let event = new Event("script2:ended")
+                    event.points = points2
+                    dispatchEvent(event);
+                    canvas2.style.opacity = 0;
+        
+                    console.log('ended')
+                };
+        
+                const ease = BezierEasing(0.25, 0.1, 0.25, 1.0); // ease-in-out
+                progress = ease(progress);
+                ctx2.fillStyle = "hsl(0, 82%, 83%)";
+                drawCircle2( ActiveState.x + deltaX * progress, ActiveState.y + deltaY * progress, ActiveState.size + (NextState.size - ActiveState.size) * progress);
+            };    
+        };
+        
+        
+        function rest2() {
+            canvas2.width = window.innerWidth;
+            canvas2.height = window.innerHeight;
+            ctx2.font = `${fontSize2}px ${fontFamily2}`;
+        
+            ctx2.beginPath();
+            ctx2.fillStyle = "black";
+            ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+            ctx2.fill()
+        }
+        
+        function drawCircle2(x, y, radius) {
+            ctx2.beginPath();
+            ctx2.arc(x, y, radius, 0, Math.PI * 2);
+            ctx2.fill();
+        }
+        
+        function drawText2(text, x, y) {
+            ctx2.fillText(text, x, y);
+        }
+        
+        function randomInt2(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        function shuffleArray2(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+              let j = randomInt2(0, i); // use your randomInt2 function
+              [arr[i], arr[j]] = [arr[j], arr[i]]; // swap elements
+            }
+            return arr;
+        }
+        
+        function createTextTargets2(word = "hello", bigFontSize2) {
+            // Offscreen render
+            let offCanvas = document.createElement("canvas");
+            offCanvas.width = bigFontSize2 * 20;
+            offCanvas.height = bigFontSize2 * 1.5;
+            let offCtx2 = offCanvas.getContext("2d");
+            
+            offCtx2.fillStyle = "white";
+            offCtx2.font = `${bigFontSize2}px '${fontFamily2}'`;
+            offCtx2.textAlign = ctx2.textAlign;
+            offCtx2.textBaseline = ctx2.textBaseline;
+        
+            offCtx2.fillText(word, 0, bigFontSize2);
+        
+            let imgData = offCtx2.getImageData(0, 0, offCanvas.width, offCanvas.height).data; 
+            let targets = [];
+            let minX = offCanvas.width
+            let minY = offCanvas.height
+            let maxX = 0
+            let maxY = 0
+        
+            for(let y = 0; y < offCanvas.height; y += density) {
+                for(let x = 0; x < offCanvas.width; x += density) {
+                    if(imgData[(y * offCanvas.width + x) * 4] > 0) {
+                        maxX = Math.max(maxX, x);                
+                        minX = Math.min(minX, x);                
+                        maxY = Math.max(maxY, y);
+                        minY = Math.min(minY, y);
+                        targets.push({ x, y })
+                    };
+                }
+            }
+        
+            return {targets, startX: minX, startY: minY, endX: maxX, endY: maxY,width: maxX - minX, height: maxY - minY};
+          }
+        
+        document.fonts.ready.then(() => {
+            draw();
+        })
+        
+        
+        // []TODO ctx2.shadowColor = "white";
+        // ctx.shadowBlur = 5;</script> 
+        
+        
+    <script>let canvas3 = document.createElement("canvas");
+        let ctx3 = canvas3.getContext("2d");
+        document.body.appendChild(canvas3);
+        
+        let fontSize3 = 35;
+        let fontFamily3 = "monospace";
+        
+        let points = [];
+        let disappearingPoints = [];
+        
+        let media = [
+          { src: "./media/GtZ3uE1V.mp4", x: 70, y: 0 },
+          { src: "media/🐾🐾.jpg", x: 50, y: 10 },
+          { src: "media/⌕ Kim Jun Hee [Player 222] _ 𝑺𝒒𝒖𝒊𝒅 𝑮𝒂𝒎𝒆….jpg", x: 5, y: 0 },
+          { src: "media/˗ˏˋ 🥩 ;; 𝐌𝐀𝐓𝐄𝐑𝐈𝐀𝐋_.jpg", x: 70, y: 0 },
+          { src: "./media/Jv_UjLBU.mp4", x: 30, y: 0 },
+          { src: "media/zeoCdZ5P.jpg", x: 20, y: 10 },
+          { src: "media/Nintendo kirby tattoo.jpg", x: 65, y: 0 },
+          { src: "media/HNeip14p.jpg", x: 15, y: 0 },
+          { src: "./media/XsUm7Gnl.mp4", x: 20, y: 0 },
+          {
+            src: "media/heres my profile picture☆~ (like for no reason-).jpg",
+            x: 35,
+            y: 0,
+          },
+          { src: "./media/0bgtzqo7.jpg", x: 55, y: 0 },
+          { src: "./media/2a798a6d3edd86e06316ebdaf0aec395.jpg", x: 25, y: 0 },
+          { src: "./media/Lz9DueR2.mp4", x: 35, y: 0 },
+          { src: "./media/6-KHnb6T.jpg", x: 65, y: 0 }, // top this
+          { src: "./media/a626b58fedfb031f27395f1c22f006a7.jpg", x: 5, y: 0 },
+          { src: "./media/abf1ae7ef950e878e08ce8c2ac17e223.jpg", x: 70, y: 0 },
+          { src: "./media/7nRuM1qG.mp4", x: 20, y: 0 },
+          { src: "./media/bcd5ad90deccf84af1b7e7234d6d60ea.jpg", x: 15, y: 0 },
+          { src: "./media/c760d609228b3e05d703e106eeaba4e4.jpg", x: 60, y: 0 },
+          { src: "./media/chewyshu.jpg", x: 50, y: 0 },
+          { src: "./media/ymUdCtA3.mp4", x: 10, y: 0 },
+          { text: `عارفة إننا نعرف بعض من مدة بسيطة بس والله كإنك معايا من زمان أوي 🥹💞
+          أنتي بقيتي أكتر واحدة قريبة لقلبي ❤️ ومش قادرة أتخيل يومي من غير كلامك وضحكتك 🫶
+          بجد بكون مبسوطة وأنا بحكيلك أي حاجة، حتى لو تافهة 😂
+          إنتي مش بس صاحبتي، إنتي أختي اللي قلبي اختارها 💗👭
+          ربنا يفضل جامّعنا على طول، ومحدش يفرق بينا أبدًا 🤲🌸
+          بحبك أوي يا بيستي 💘 ودايمًا هفضل جنبك زي ما إنتي دايمًا جمبي 😚💋`, x: 10, y: 0, src: null}
+        ];
+        addEventListener("script2:ended", (event) => {
+          shuffleArray3(event.points).forEach((point, index) => {
+            point = point[0];
+            if (index <= 100) {
+              points.push({
+                x: point.x,
+                y: point.y,
+                size: point.size,
+                begin: Date.now(),
+              });
+            } else {
+              disappearingPoints.push({
+                x: point.x,
+                y: point.y,
+                size: point.size,
+                begin: Date.now(),
+              });
+            }
+          });
+          
+          rest3();
+          begin3();
+          StartMedia();
+        });
+        
+        function shuffleArray3(arr) {
+          for (let i = arr.length - 1; i > 0; i--) {
+            let j = randomInt3(0, i); // use your randomInt3 function
+            [arr[i], arr[j]] = [arr[j], arr[i]]; // swap elements
+          }
+          return arr;
+        }
+        
+        function randomInt3(min, max) {
+          return Math.floor(Math.random() * (max - min)) + min;
+        }
+        
+        function drawCircle3(x, y, radius) {
+          ctx3.beginPath();
+          ctx3.arc(x, y, radius, 0, Math.PI * 2);
+          ctx3.fill();
+        }
+        
+        function begin3() {
+          rest3();
+          drawPoints3();
+          drawDisappearingPoints();
+          requestAnimationFrame(begin3);
+        }
+        
+        function rest3() {
+          canvas3.width = window.innerWidth;
+          canvas3.height = window.innerHeight;
+          ctx3.font = `${fontSize3}px ${fontFamily3}`;
+        
+          ctx3.beginPath();
+          ctx3.fillStyle = "black";
+          ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
+          ctx3.fill();
+        }
+        
+        function drawPoints3() {
+          points.forEach(({ x, y, size, speed }, i) => {
+            ctx3.fillStyle = "white";
+            if (!speed) speed = randomInt3(0, 10) / 100;
+            if (points[i].size > randomInt3(2, 5) || points[i].size <= 0) speed *= -1;
+            points[i].speed = speed;
+            points[i].size += speed;
+            drawCircle3(x, y, Math.max(size, 0));
+          });
+        }
+        
+        function drawDisappearingPoints() {
+          disappearingPoints.forEach(({ x, y, size, begin }) => {
+            ctx3.fillStyle = "white";
+            drawCircle3(x, y, size * Math.max(1 - (Date.now() - begin) / 2000, 0)); // Fade out over 2 seconds
+          });
+        }
+        
+        function StartMedia() {
+          media.forEach(({ src, x, y, text }, i) => {
+            let ele;
+        
+            if (text) {
+              ele = document.createElement('p');
+              ele.innerText = text;
+            } else if (/\.mp4$/i.test(src)) {
+              ele = document.createElement('video');
+              ele.src = src;
+            } else {
+              ele = document.createElement('img');
+              ele.src = src;
+            }
+        
+            let maxX = ((window.innerWidth - 200) / window.innerWidth * 100) - 5;
+            ele.style.translate = `${Math.max(Math.min(x, maxX), 5)}vw ${y}vh`;
+        
+            document.querySelector(".gallary").append(ele);
+        
+            setTimeout(() => {
+              ele.style.top = text
+                ? `calc(-60vh - ${ele.clientHeight / 2}px)`
+                : `calc(-110vh - 500px)`;
+        
+              if (ele.tagName === "VIDEO") {
+                setTimeout(() => ele.play(), 100);
+                setTimeout(() => ele.pause(), 10500);
+              }
+            }, i * 2500);
+          });
+        }</script>
+</body>
+
+</html>
