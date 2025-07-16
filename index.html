@@ -628,12 +628,9 @@
               }
 
               if (ele.classList.contains('music')) {
-
-                setTimeout(() => { 
-                    ele.querySelector('video').muted = false
-                    ele.querySelector('video').currentTime = 0
-                }, 100);
-                setTimeout(() => ele.querySelector('video').muted = true, 10500);
+                setTimeout(() => ele.querySelector('video').play(), 100);
+                setTimeout(() => ele.querySelector('video').play(), 200);
+                setTimeout(() => ele.querySelector('video').pause(), 10500);
               }
             }, i * 2500);
           });
@@ -641,9 +638,6 @@
 
         function CreateMusic(video) {
             let coverImage = document.createElement('video');
-            coverImage.muted = true
-            coverImage.loop = true;
-            coverImage.autoplay = true;
             coverImage.src = video;
             coverImage.classList = "cover";
             
