@@ -28,12 +28,18 @@
             z-index: -1;
         }
 
+        html { 
+            overflow: hidden;
+        }
+
         body {
             font-size: 17px;
             color: red;
             font-family: 'Cagliostro';
             background: black;
             overflow: hidden;
+            height: 100ldvh;
+
         }
 
         p {
@@ -63,7 +69,7 @@
 
         .gallary {
             position: absolute;
-            top: 110vh;
+            top: 110dvh;
         }
 
         @keyframes floatInPlace {
@@ -504,30 +510,30 @@
 
         let media = [
             { src: "./media/XsUm7Gnl.mp4", music: true, x: 20, y: 0 },
-            { src: "media/🐾🐾.jpg", x: 50, y: 10 },
-            { src: "media/⌕ Kim Jun Hee [Player 222] _ 𝑺𝒒𝒖𝒊𝒅 𝑮𝒂𝒎𝒆….jpg", x: 5, y: 0 },
-            { src: "media/˗ˏˋ 🥩 ;; 𝐌𝐀𝐓𝐄𝐑𝐈𝐀𝐋_.jpg", x: 70, y: 0 },
+            { src: "./media/happy (1).jpg", x: 50, y: 10 },
+            { src: "./media/happy (2).jpg", x: 5, y: 0 },
+            { src: "./media/happy (3).jpg", x: 70, y: 0 },
             { src: "./media/Jv_UjLBU.mp4", music: true, x: 30, y: 0 },
-            { src: "media/zeoCdZ5P.jpg", x: 20, y: 10 },
-            { src: "media/Nintendo kirby tattoo.jpg", x: 65, y: 0 },
-            { src: "media/HNeip14p.jpg", x: 15, y: 0 },
+            { src: "./media/happy (4).jpg", x: 20, y: 10 },
+            { src: "./media/happy (5).jpg", x: 0, y: 0 },
+            { src: "./media/happy (6).jpg", x: 30, y: 0 },
             { src: "./media/GtZ3uE1V.mp4", music: true, x: 70, y: 0 },
             {
-                src: "media/heres my profile picture☆~ (like for no reason-).jpg",
+                src: "./media/happy (7).jpg",
                 x: 35,
                 y: 0,
             },
-            { src: "./media/0bgtzqo7.jpg", x: 55, y: 0 },
-            { src: "./media/2a798a6d3edd86e06316ebdaf0aec395.jpg", x: 25, y: 0 },
-            { src: "./media/Lz9DueR2.mp4", music: true, x: 35, y: 0 },
-            { src: "./media/6-KHnb6T.jpg", x: 65, y: 0 }, // top this
-            { src: "./media/a626b58fedfb031f27395f1c22f006a7.jpg", x: 5, y: 0 },
-            { src: "./media/abf1ae7ef950e878e08ce8c2ac17e223.jpg", x: 70, y: 0 },
-            { src: "./media/7nRuM1qG.mp4", music: true, x: 20, y: 0 },
-            { src: "./media/bcd5ad90deccf84af1b7e7234d6d60ea.jpg", x: 15, y: 0 },
-            { src: "./media/c760d609228b3e05d703e106eeaba4e4.jpg", x: 60, y: 0 },
-            { src: "./media/chewyshu.jpg", x: 50, y: 0 },
-            { src: "./media/ymUdCtA3.mp4", music: true, x: 10, y: 0 },
+            { src: "./media/happy (8).jpg", x: 0, y: 0 },
+            { src: "./media/happy (9).jpg", x: 0, y: 0 },
+            { src: "./media/Lz9DueR2.mp4", music: true, x: 30, y: 0 },
+            { src: "./media/happy (10).jpg", x: 65, y: 0 }, // top this
+            { src: "./media/happy (11).jpg", x: 5, y: 0 },
+            { src: "./media/happy (12).jpg", x: 0, y: 0 },
+            { src: "./media/7nRuM1qG.mp4", music: true, x: 0, y: 0 },
+            { src: "./media/happy (13).jpg", x: 15, y: 0 },
+            { src: "./media/happy (14).jpg", x: 60, y: 0 },
+            { src: "./media/happy (15).jpg", x: 50, y: 0 },
+            { src: "./media/ymUdCtA3.mp4", music: true, x: 0, y: 0 },
             {
                 text: `عارفة إننا نعرف بعض من مدة بسيطة بس والله كإنك معايا من زمان أوي 🥹💞
           أنتي بقيتي أكتر واحدة قريبة لقلبي ❤️ ومش قادرة أتخيل يومي من غير كلامك وضحكتك 🫶
@@ -558,6 +564,7 @@
             });
 
             rest3();
+            addEmoji();
             begin3();
             StartMedia();
         });
@@ -639,14 +646,14 @@
                 }
 
                 let maxX = ((window.innerWidth - 200) / window.innerWidth * 100) - 5;
-                ele.style.translate = `${Math.max(Math.min(x, maxX), 5)}vw ${y}vh`;
+                ele.style.translate = `${Math.max(Math.min(x, maxX), 5)}vw ${y + 5}dvh`;
 
                 document.querySelector(".gallary").append(ele);
 
                 setTimeout(() => {
                     ele.style.top = text
-                        ? `calc(-60vh - ${ele.clientHeight / 2}px)`
-                        : `calc(-110vh - 500px)`;
+                        ? `calc(-60dvh - ${ele.clientHeight / 2}px)`
+                        : `calc(-110dvh - 500px)`;
 
                     if (ele.tagName === "VIDEO") {
                         setTimeout(() => ele.play(), 100);
@@ -692,6 +699,32 @@
             return music
         }
 
+        function createEmoji() {
+            let emoji = document.createElement('img');
+            let n = randomInt3(0, 57)
+            emoji.src = `./emojis/${n}.${n == 54 ? "svg" : "png"}`
+            emoji.style.left = `${randomInt3(10, window.innerWidth - 10)}px`;
+            emoji.style.top = `0dvh`;
+            emoji.style.position = "absolute";
+            emoji.style.width = `${randomInt3(25,40)}px`;
+
+            setTimeout(_ => {
+                emoji.style.transition = "top 5s ease-in-out";
+                emoji.style.top = `-115dvh`;
+                setTimeout(_ => {
+                    emoji.remove()
+                },5100)
+            },100)
+
+            document.querySelector(".gallary").append(emoji);
+        }
+        function addEmoji() {
+            createEmoji();
+
+            setTimeout(() => {
+                addEmoji()
+            }, randomInt3(900,1200));
+        }
 
 
         // let e = new Event("script2:ended")
