@@ -479,15 +479,15 @@
         let disappearingPoints = [];
         
         let media = [
-          { src: "./media/GtZ3uE1V.mp3", cover: "./media/GtZ3uE1V.gif", x: 70, y: 0 },
+          { src: "./media/GtZ3uE1V.mp4", music: true, x: 70, y: 0 },
           { src: "media/🐾🐾.jpg", x: 50, y: 10 },
           { src: "media/⌕ Kim Jun Hee [Player 222] _ 𝑺𝒒𝒖𝒊𝒅 𝑮𝒂𝒎𝒆….jpg", x: 5, y: 0 },
           { src: "media/˗ˏˋ 🥩 ;; 𝐌𝐀𝐓𝐄𝐑𝐈𝐀𝐋_.jpg", x: 70, y: 0 },
-          { src: "./media/Jv_UjLBU.mp3", cover: "./media/Jv_UjLBU.gif", x: 30, y: 0 },
+          { src: "./media/Jv_UjLBU.mp4", cover: "./media/Jv_UjLBU.gif", x: 30, y: 0 },
           { src: "media/zeoCdZ5P.jpg", x: 20, y: 10 },
           { src: "media/Nintendo kirby tattoo.jpg", x: 65, y: 0 },
           { src: "media/HNeip14p.jpg", x: 15, y: 0 },
-          { src: "./media/XsUm7Gnl.mp3", cover: "./media/XsUm7Gnl.gif", x: 20, y: 0 },
+          { src: "./media/XsUm7Gnl.mp4", cover: "./media/XsUm7Gnl.gif", x: 20, y: 0 },
           {
             src: "media/heres my profile picture☆~ (like for no reason-).jpg",
             x: 35,
@@ -495,15 +495,15 @@
           },
           { src: "./media/0bgtzqo7.jpg", x: 55, y: 0 },
           { src: "./media/2a798a6d3edd86e06316ebdaf0aec395.jpg", x: 25, y: 0 },
-          { src: "./media/Lz9DueR2.mp3", cover: "./media/Lz9DueR2.gif", x: 35, y: 0 },
+          { src: "./media/Lz9DueR2.mp4", cover: "./media/Lz9DueR2.gif", x: 35, y: 0 },
           { src: "./media/6-KHnb6T.jpg", x: 65, y: 0 }, // top this
           { src: "./media/a626b58fedfb031f27395f1c22f006a7.jpg", x: 5, y: 0 },
           { src: "./media/abf1ae7ef950e878e08ce8c2ac17e223.jpg", x: 70, y: 0 },
-          { src: "./media/7nRuM1qG.mp3", cover: "./media/7nRuM1qG.gif", x: 20, y: 0 },
+          { src: "./media/7nRuM1qG.mp4", cover: "./media/7nRuM1qG.gif", x: 20, y: 0 },
           { src: "./media/bcd5ad90deccf84af1b7e7234d6d60ea.jpg", x: 15, y: 0 },
           { src: "./media/c760d609228b3e05d703e106eeaba4e4.jpg", x: 60, y: 0 },
           { src: "./media/chewyshu.jpg", x: 50, y: 0 },
-          { src: "./media/ymUdCtA3.mp3", cover: "./media/ymUdCtA3.gif", x: 10, y: 0 },
+          { src: "./media/ymUdCtA3.mp4", cover: "./media/ymUdCtA3.gif", x: 10, y: 0 },
           { text: `عارفة إننا نعرف بعض من مدة بسيطة بس والله كإنك معايا من زمان أوي 🥹💞
           أنتي بقيتي أكتر واحدة قريبة لقلبي ❤️ ومش قادرة أتخيل يومي من غير كلامك وضحكتك 🫶
           بجد بكون مبسوطة وأنا بحكيلك أي حاجة، حتى لو تافهة 😂
@@ -593,7 +593,7 @@
         let audios = []
 
         function StartMedia() {
-          media.forEach(({ src, x, y, text, cover }, i) => {
+          media.forEach(({ src, x, y, text, music }, i) => {
             let ele;
             let rex
 
@@ -601,13 +601,9 @@
             if (text) {
               ele = document.createElement('p');
               ele.innerText = text;
-            } else if(/\.mp3$/i.test(src)) {
-                let {music,audio} = CreateMusic(cover, src);
+            } else if (/\.mp4$/i.test(src) && music) {
+                let music = CreateMusic(src);
                 ele = music;
-                
-                music.dataset.index = audios.length;
-                audios.push(audio);
-                
             }else if (/\.mp4$/i.test(src)) {
               ele = document.createElement('video');
               ele.src = src;
@@ -625,27 +621,31 @@
               ele.style.top = text
               ? `calc(-60vh - ${ele.clientHeight / 2}px)`
               : `calc(-110vh - 500px)`;
-
+              
+              ele.style.top = '-70vh'
               if (ele.tagName === "VIDEO") {
                 setTimeout(() => ele.play(), 100);
                 setTimeout(() => ele.pause(), 10500);
               }
 
               if (ele.classList.contains('music')) {
-                let audio = audios[ele.dataset.index]
-                setTimeout(() => audio.play(), 100);
-                setTimeout(() => audio.pause(), 10500);
+
+                setTimeout(() => { 
+                    ele.querySelector('video').muted = false
+                    ele.querySelector('video').currentTime = 0
+                }, 100);
+                setTimeout(() => ele.querySelector('video').muted = true, 10500);
               }
             }, i * 2500);
           });
         }
 
-        function CreateMusic(cover,audio) {
-            let audioElement = document.createElement('video');
-            audioElement.src = audio;
-            
-            let coverImage = document.createElement('img');
-            coverImage.src = cover;
+        function CreateMusic(video) {
+            let coverImage = document.createElement('video');
+            coverImage.muted = true
+            coverImage.loop = true;
+            coverImage.autoplay = true;
+            coverImage.src = video;
             coverImage.classList = "cover";
             
             let music = document.createElement('div');
@@ -670,10 +670,7 @@
 
             music.append(coverImage, playAnimation);
 
-            return {
-                audio: audioElement,
-                music
-            };
+            return music
         }
 
 
